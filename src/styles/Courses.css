@@ -1,0 +1,154 @@
+.courses-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin: 0;
+}
+
+.filters-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.search-box {
+  flex: 1;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-400);
+}
+
+.search-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 16px 0 40px;
+  border-radius: 6px;
+  border: 1px solid var(--gray-300);
+  background-color: white;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  border: 1px solid var(--gray-300);
+  border-radius: 6px;
+  padding: 0 12px;
+  height: 40px;
+}
+
+.filter-select {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  padding: 0;
+  color: var(--gray-700);
+  outline: none;
+}
+
+.th-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.th-content:hover {
+  color: var(--primary-600);
+}
+
+.instructor-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.text-success {
+  color: var(--success-500);
+}
+
+.text-muted {
+  color: var(--gray-500);
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: none;
+  border: none;
+  color: var(--gray-600);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: var(--gray-100);
+  color: var(--gray-800);
+}
+
+.action-btn.edit:hover {
+  background-color: var(--amber-50);
+  color: var(--amber-600);
+}
+
+.action-btn.delete:hover {
+  background-color: #FEE2E2;
+  color: var(--error-500);
+}
+
+.empty-table {
+  text-align: center;
+  padding: 32px;
+  color: var(--gray-500);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filters-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+}

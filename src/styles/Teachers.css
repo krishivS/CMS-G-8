@@ -1,0 +1,210 @@
+.teachers-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.teachers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.teacher-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.teacher-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  border-bottom: 1px solid var(--gray-200);
+  position: relative;
+}
+
+.teacher-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--primary-600);
+  color: white;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.teacher-info {
+  flex: 1;
+}
+
+.teacher-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin: 0 0 4px;
+}
+
+.teacher-title {
+  font-size: 14px;
+  color: var(--gray-600);
+  margin: 0;
+}
+
+.actions-dropdown {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transform-origin: top right;
+  transition: all 0.2s ease;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95);
+}
+
+.teacher-card:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: var(--gray-100);
+}
+
+.dropdown-item.edit:hover {
+  background-color: var(--amber-50);
+  color: var(--amber-600);
+}
+
+.dropdown-item.delete:hover {
+  background-color: #FEE2E2;
+  color: var(--error-500);
+}
+
+.teacher-content {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.teacher-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--gray-700);
+}
+
+.teacher-detail svg {
+  color: var(--gray-500);
+  flex-shrink: 0;
+}
+
+.teacher-courses {
+  padding: 16px 20px;
+  border-top: 1px solid var(--gray-200);
+  background-color: var(--gray-50);
+}
+
+.courses-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin: 0 0 12px;
+}
+
+.courses-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.course-tag {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 10px;
+  background-color: white;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.course-code {
+  font-weight: 600;
+  color: var(--primary-600);
+}
+
+.course-name {
+  color: var(--gray-600);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.no-courses {
+  font-size: 13px;
+  color: var(--gray-500);
+  font-style: italic;
+  margin: 0;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  text-align: center;
+  color: var(--gray-500);
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--gray-600);
+  margin: 0 0 8px;
+}
+
+.empty-state p {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .teachers-grid {
+    grid-template-columns: 1fr;
+  }
+}
