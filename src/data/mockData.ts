@@ -1,4 +1,5 @@
-import { Course, Teacher, Student, Event } from '../types';
+import { Teacher, Course, Student, Event, Mark } from '../types'
+
 
 export const mockCourses: Course[] = [
   {
@@ -67,7 +68,12 @@ export const mockTeachers: Teacher[] = [
     designation: 'Associate Professor',
     phone: '(555) 123-4567',
     assignedCourses: ['1', '4'],
-    joiningDate: '2015-09-01T00:00:00Z'
+    joiningDate: '2015-09-01T00:00:00Z',
+    status: 'active',
+    specialization: 'Artificial Intelligence',
+    education: 'Ph.D. in Computer Science',
+    office: 'CS Building, Room 101',
+    officeHours: 'Mon-Wed 2-4 PM'
   },
   {
     id: '2',
@@ -77,7 +83,12 @@ export const mockTeachers: Teacher[] = [
     designation: 'Professor',
     phone: '(555) 234-5678',
     assignedCourses: ['2', '5'],
-    joiningDate: '2010-08-15T00:00:00Z'
+    joiningDate: '2010-08-15T00:00:00Z',
+    status: 'active',
+    specialization: 'Applied Mathematics',
+    education: 'Ph.D. in Mathematics',
+    office: 'Math Building, Room 205',
+    officeHours: 'Tue-Thu 1-3 PM'
   },
   {
     id: '3',
@@ -87,7 +98,12 @@ export const mockTeachers: Teacher[] = [
     designation: 'Assistant Professor',
     phone: '(555) 345-6789',
     assignedCourses: ['3'],
-    joiningDate: '2018-01-10T00:00:00Z'
+    joiningDate: '2018-01-10T00:00:00Z',
+    status: 'active',
+    specialization: 'Quantum Mechanics',
+    education: 'Ph.D. in Physics',
+    office: 'Physics Building, Room 301',
+    officeHours: 'Mon-Fri 10-12 PM'
   },
   {
     id: '4',
@@ -97,7 +113,12 @@ export const mockTeachers: Teacher[] = [
     designation: 'Lecturer',
     phone: '(555) 456-7890',
     assignedCourses: [],
-    joiningDate: '2020-08-20T00:00:00Z'
+    joiningDate: '2020-08-20T00:00:00Z',
+    status: 'active',
+    specialization: 'Software Engineering',
+    education: 'M.S. in Computer Science',
+    office: 'CS Building, Room 102',
+    officeHours: 'Wed-Fri 3-5 PM'
   },
   {
     id: '5',
@@ -107,7 +128,12 @@ export const mockTeachers: Teacher[] = [
     designation: 'Associate Professor',
     phone: '(555) 567-8901',
     assignedCourses: [],
-    joiningDate: '2016-07-15T00:00:00Z'
+    joiningDate: '2016-07-15T00:00:00Z',
+    status: 'active',
+    specialization: 'Statistics',
+    education: 'Ph.D. in Mathematics',
+    office: 'Math Building, Room 206',
+    officeHours: 'Mon-Wed 11-1 PM'
   }
 ];
 
@@ -118,9 +144,15 @@ export const mockStudents: Student[] = [
     email: 'abrown@university.edu',
     rollNumber: 'CS2021001',
     department: 'Computer Science',
+    section: 'A',
     enrolledCourses: ['1', '4', '5'],
     year: 2,
-    semester: 3
+    semester: 3,
+    status: 'active',
+    guardianName: 'John Brown',
+    guardianContact: '(555) 111-2222',
+    dateOfBirth: '2002-05-15',
+    address: '123 University Ave, City, State'
   },
   {
     id: '2',
@@ -128,9 +160,15 @@ export const mockStudents: Student[] = [
     email: 'bmiller@university.edu',
     rollNumber: 'CS2021002',
     department: 'Computer Science',
+    section: 'A',
     enrolledCourses: ['1', '2', '4'],
     year: 2,
-    semester: 3
+    semester: 3,
+    status: 'active',
+    guardianName: 'Mary Miller',
+    guardianContact: '(555) 222-3333',
+    dateOfBirth: '2002-07-20',
+    address: '456 College St, City, State'
   },
   {
     id: '3',
@@ -138,9 +176,15 @@ export const mockStudents: Student[] = [
     email: 'cdavis@university.edu',
     rollNumber: 'MATH2020005',
     department: 'Mathematics',
+    section: 'B',
     enrolledCourses: ['2', '5'],
     year: 3,
-    semester: 5
+    semester: 5,
+    status: 'active',
+    guardianName: 'James Davis',
+    guardianContact: '(555) 333-4444',
+    dateOfBirth: '2001-03-10',
+    address: '789 Campus Rd, City, State'
   },
   {
     id: '4',
@@ -148,9 +192,15 @@ export const mockStudents: Student[] = [
     email: 'dgarcia@university.edu',
     rollNumber: 'PHYS2022008',
     department: 'Physics',
+    section: 'C',
     enrolledCourses: ['2', '3'],
     year: 1,
-    semester: 2
+    semester: 2,
+    status: 'active',
+    guardianName: 'Maria Garcia',
+    guardianContact: '(555) 444-5555',
+    dateOfBirth: '2003-09-25',
+    address: '321 Science Ave, City, State'
   },
   {
     id: '5',
@@ -158,9 +208,15 @@ export const mockStudents: Student[] = [
     email: 'ewilson@university.edu',
     rollNumber: 'CS2020015',
     department: 'Computer Science',
+    section: 'B',
     enrolledCourses: ['1', '3', '4'],
     year: 3,
-    semester: 6
+    semester: 6,
+    status: 'active',
+    guardianName: 'Sarah Wilson',
+    guardianContact: '(555) 555-6666',
+    dateOfBirth: '2001-01-30',
+    address: '654 Tech St, City, State'
   },
   {
     id: '6',
@@ -168,9 +224,15 @@ export const mockStudents: Student[] = [
     email: 'ftaylor@university.edu',
     rollNumber: 'MATH2021012',
     department: 'Mathematics',
+    section: 'A',
     enrolledCourses: ['2', '5'],
     year: 2,
-    semester: 4
+    semester: 4,
+    status: 'active',
+    guardianName: 'David Taylor',
+    guardianContact: '(555) 666-7777',
+    dateOfBirth: '2002-11-15',
+    address: '987 Math Lane, City, State'
   },
   {
     id: '7',
@@ -178,9 +240,15 @@ export const mockStudents: Student[] = [
     email: 'gmartin@university.edu',
     rollNumber: 'CS2022003',
     department: 'Computer Science',
+    section: 'C',
     enrolledCourses: ['1', '4'],
     year: 1,
-    semester: 1
+    semester: 1,
+    status: 'active',
+    guardianName: 'Lisa Martin',
+    guardianContact: '(555) 777-8888',
+    dateOfBirth: '2003-04-05',
+    address: '147 Code Ave, City, State'
   },
   {
     id: '8',
@@ -188,9 +256,15 @@ export const mockStudents: Student[] = [
     email: 'hlee@university.edu',
     rollNumber: 'PHYS2021010',
     department: 'Physics',
+    section: 'B',
     enrolledCourses: ['3', '5'],
     year: 2,
-    semester: 3
+    semester: 3,
+    status: 'active',
+    guardianName: 'Robert Lee',
+    guardianContact: '(555) 888-9999',
+    dateOfBirth: '2002-08-12',
+    address: '258 Physics Rd, City, State'
   }
 ];
 

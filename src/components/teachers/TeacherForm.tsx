@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
+import { supabase } from '../../utils/supabaseClient'
+import { getTeachers, addTeacher, updateTeacher, deleteTeacher } from '../../api/teachers'
+import { addTeacher as addTeacherToSupabase } from '../../api/teachers';
+
 import { X } from 'lucide-react';
 import '../../styles/modal.css';
 
@@ -87,7 +91,7 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ teacherId, onClose }) => {
     }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) {
@@ -96,23 +100,46 @@ const TeacherForm: React.FC<TeacherFormProps> = ({ teacherId, onClose }) => {
     
     setIsSubmitting(true);
     
-    if (teacherId) {
-      // Update existing teacher
-      updateTeacher(teacherId, formData);
-    } else {
-      // Add new teacher
-      addTeacher({
-        id: crypto.randomUUID(),
-        ...formData,
-        assignedCourses: [],
-        joiningDate: new Date(formData.joiningDate).toISOString()
-      });
-    }
-    
-    setTimeout(() => {
+    try {
+      if (teacherId) {
+        // Update existing teacher
+        updateTeacher(teacherId, formData);
+      } else {
+        // Add new teacher
+        const newTeacher = {
+          id: crypto.randomUUID(),
+          ...formData,
+          assignedCourses: [],
+          joiningDate: new Date(formData.joiningDate).toISOString(),
+          status: 'active' as const,
+          specialization: '',
+          education: '',
+          office: '',
+          officeHours: ''
+        };
+
+        // First add to Supabase
+        const { error } = await addTeacherToSupabase(newTeacher);
+        
+        if (error) {
+          console.error('Error adding teacher to Supabase:', error);
+          // You might want to show an error message to the user here
+          return;
+        }
+
+        // Then add to local state
+        addTeacher(newTeacher);
+      }
+      
+      setTimeout(() => {
+        setIsSubmitting(false);
+        onClose();
+      }, 500);
+    } catch (error) {
+      console.error('Error in handleSubmit:', error);
       setIsSubmitting(false);
-      onClose();
-    }, 500);
+      // You might want to show an error message to the user here
+    }
   };
   
   return (

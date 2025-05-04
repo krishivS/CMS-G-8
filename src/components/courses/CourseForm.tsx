@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useData } from '../../context/DataContext';
 import { X } from 'lucide-react';
 import '../../styles/modal.css';
-
+import { v4 as uuidv4 } from 'uuid';
 interface CourseFormProps {
   courseId: string | null;
   onClose: () => void;
@@ -13,6 +13,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ courseId, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const initialFormState = {
+    id: uuidv4(),
     name: '',
     code: '',
     description: '',
@@ -29,6 +30,7 @@ const CourseForm: React.FC<CourseFormProps> = ({ courseId, onClose }) => {
       const course = courses.find(c => c.id === courseId);
       if (course) {
         setFormData({
+          id: course.id,
           name: course.name,
           code: course.code,
           description: course.description,
@@ -93,7 +95,6 @@ const CourseForm: React.FC<CourseFormProps> = ({ courseId, onClose }) => {
     } else {
       // Add new course
       addCourse({
-        id: crypto.randomUUID(),
         ...formData,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),

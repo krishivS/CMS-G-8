@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Course, Teacher, Student, Event, Mark } from '../types';
 import { mockCourses, mockTeachers, mockStudents, mockEvents } from '../data/mockData';
+import { supabase } from '../utils/supabaseClient';
 
 interface DataContextType {
   courses: Course[];
@@ -45,10 +46,35 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     });
     setMarks(initialMarks);
+
+    supabase.from('Teachers').select('*').then(({ data, error }) => {
+      if (error) {
+        console.error('Error fetching teachers:', error);
+      } else {
+        setTeachers(data);
+      }
+    });
+
+    supabase.from('Courses').select('*').then(({ data, error }) => {
+      if (error) {
+        console.error('Error fetching courses:', error);
+      } else {
+        setCourses(data);
+      }
+    });
   }, [students]);
 
   const addCourse = (course: Course) => {
     setCourses([...courses, course]);
+    console.log(course);
+    
+    supabase.from('Courses').insert(course).then(({ data, error }) => {
+      if (error) {
+        console.error('Error adding course:', error);
+      } else {
+        console.log('Course added:', data);
+      }
+    });
   };
 
   const updateCourse = (courseId: string, updatedCourse: Partial<Course>) => {
