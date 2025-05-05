@@ -3,6 +3,8 @@ import { Course, Teacher, Student, Event, Mark } from '../types';
 import { mockCourses, mockTeachers, mockStudents, mockEvents } from '../data/mockData';
 import { supabase } from '../utils/supabaseClient';
 
+
+
 interface DataContextType {
   courses: Course[];
   teachers: Teacher[];
@@ -32,7 +34,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [marks, setMarks] = useState<Mark[]>([]);
 
   useEffect(() => {
-    // Initialize marks based on students and their enrolled courses
     const initialMarks: Mark[] = [];
     students.forEach(student => {
       student.enrolledCourses.forEach(courseId => {
@@ -40,7 +41,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           id: `${student.id}-${courseId}`,
           studentId: student.id,
           courseId: courseId,
-          marks: Math.floor(Math.random() * 41) + 60, // Random marks between 60-100
+          marks: Math.floor(Math.random() * 41) + 60, 
           updatedAt: new Date().toISOString()
         });
       });
@@ -64,6 +65,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   }, [students]);
 
+
+
+
+
+
+// COURSES addition Function
   const addCourse = (course: Course) => {
     setCourses([...courses, course]);
     console.log(course);
@@ -77,15 +84,36 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+
+
+
+// COURSES update Function
   const updateCourse = (courseId: string, updatedCourse: Partial<Course>) => {
+    // Update in local state
     setCourses(courses.map(course => 
       course.id === courseId ? { ...course, ...updatedCourse } : course
     ));
+  
+    // Update in Supabase
+    supabase
+      .from('Courses')
+      .update(updatedCourse)
+      .eq('id', courseId)
+      .then(({ error }) => {
+        if (error) {
+          console.error('Error updating course in Supabase:', error);
+        } else {
+          console.log('Course updated in Supabase');
+        }
+      });
   };
+  
 
+
+
+// COURSES delete Function
   const deleteCourse = (courseId: string) => {
     setCourses(courses.filter(course => course.id !== courseId));
-    // Also remove the course from teachers and students
     setTeachers(teachers.map(teacher => ({
       ...teacher,
       assignedCourses: teacher.assignedCourses.filter(id => id !== courseId)
@@ -94,47 +122,134 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       ...student,
       enrolledCourses: student.enrolledCourses.filter(id => id !== courseId)
     })));
-    // Remove related marks
     setMarks(marks.filter(mark => mark.courseId !== courseId));
+  
+    supabase.from('Courses').delete().eq('id', courseId).then(({ error }) => {
+      if (error) {
+        console.error('Error deleting course from Supabase:', error);
+      } else {
+        console.log('Course deleted from Supabase');
+      }
+    });
   };
+  
+
+
+
+
+
+
+
 
   const assignTeacher = (courseId: string, teacherId: string) => {
     // Unassign the course from any teacher that might have it
-    setTeachers(teachers.map(teacher => ({
+    const updatedTeachers = teachers.map(teacher => ({
       ...teacher,
       assignedCourses: teacher.assignedCourses.filter(id => id !== courseId)
-    })));
-    
+    }));
+  
     // Assign the course to the new teacher
-    setTeachers(teachers.map(teacher => 
-      teacher.id === teacherId 
-        ? { ...teacher, assignedCourses: [...teacher.assignedCourses, courseId] } 
+    const finalTeachers = updatedTeachers.map(teacher =>
+      teacher.id === teacherId
+        ? { ...teacher, assignedCourses: [...teacher.assignedCourses, courseId] }
         : teacher
-    ));
-    
+    );
+    setTeachers(finalTeachers);
+  
     // Update the course with the new teacher
-    setCourses(courses.map(course => 
+    setCourses(courses.map(course =>
       course.id === courseId ? { ...course, teacherId } : course
     ));
+  
+    // Supabase: update the course with the new teacherId
+    supabase
+      .from('Courses')
+      .update({ teacherId })
+      .eq('id', courseId)
+      .then(({ error }) => {
+        if (error) {
+          console.error('Error updating course with assigned teacher:', error);
+        } else {
+          console.log('Course updated with assigned teacher in Supabase');
+        }
+      });
+  
+    // Supabase: update the teacher's assignedCourses
+    const newTeacher = finalTeachers.find(t => t.id === teacherId);
+    if (newTeacher) {
+      supabase
+        .from('Teachers')
+        .update({ assignedCourses: newTeacher.assignedCourses })
+        .eq('id', teacherId)
+        .then(({ error }) => {
+          if (error) {
+            console.error('Error updating teacher with assigned course:', error);
+          } else {
+            console.log('Teacher updated with assigned course in Supabase');
+          }
+        });
+    }
   };
+  
 
+
+
+
+// TEACHERS addition Function
   const addTeacher = (teacher: Teacher) => {
     setTeachers([...teachers, teacher]);
   };
 
+
+
+// TEACHERS update Function
   const updateTeacher = (teacherId: string, updatedTeacher: Partial<Teacher>) => {
     setTeachers(teachers.map(teacher => 
       teacher.id === teacherId ? { ...teacher, ...updatedTeacher } : teacher
     ));
+  
+    supabase
+      .from('Teachers')
+      .update(updatedTeacher)
+      .eq('id', teacherId)
+      .then(({ error }) => {
+        if (error) {
+          console.error('Error updating teacher in Supabase:', error);
+        } else {
+          console.log('Teacher updated in Supabase');
+        }
+      });
   };
+  
 
+
+
+
+// TEACHERS delete Function
   const deleteTeacher = (teacherId: string) => {
     setTeachers(teachers.filter(teacher => teacher.id !== teacherId));
-    // Unassign the teacher from courses
-    setCourses(courses.map(course => 
+    setCourses(courses.map(course =>
       course.teacherId === teacherId ? { ...course, teacherId: undefined } : course
     ));
+  
+    supabase.from('Teachers').delete().eq('id', teacherId).then(({ error }) => {
+      if (error) {
+        console.error('Error deleting teacher from Supabase:', error);
+      } else {
+        console.log('Teacher deleted from Supabase');
+      }
+    });
   };
+  
+
+
+
+
+
+
+
+
+
 
   const updateMarks = (studentId: string, courseId: string, updatedMarks: number) => {
     const markIndex = marks.findIndex(
@@ -154,7 +269,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         ...marks.slice(markIndex + 1)
       ]);
     } else {
-      // If no mark exists, create a new one
       const newMark: Mark = {
         id: `${studentId}-${courseId}`,
         studentId,
