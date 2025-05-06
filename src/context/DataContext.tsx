@@ -250,6 +250,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
 
+  
+
+
 
   const updateMarks = (studentId: string, courseId: string, updatedMarks: number) => {
     const markIndex = marks.findIndex(
